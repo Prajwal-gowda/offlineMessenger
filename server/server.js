@@ -9,6 +9,8 @@ let bodyParser = require("body-parser");
 let database = require("./database/db");
 const userRoute = require("../server/routes/userRoutes");
 const loginRoute = require("./routes/loginRoutes");
+const dashboardRoute = require("./routes/dashboardRoutes");
+
 //localhost port
 const port = 4000;
 
@@ -42,6 +44,7 @@ app.use(
 app.use(cors());
 app.use("/register", userRoute);
 app.use("/login", loginRoute);
+app.use("/dashboard", dashboardRoute);
 
 // handling socket related events
 const socketOps = require("./socketOps");

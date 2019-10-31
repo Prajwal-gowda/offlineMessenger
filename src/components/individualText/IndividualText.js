@@ -5,7 +5,7 @@ export default function IndividualText({ msgObj, index }) {
   return (
     <div key={index}>
       <p className="message-data">
-        <strong>{msgObj.name} : </strong>
+        <strong>{msgObj.sender} : </strong>
         {msgObj.message}
       </p>
     </div>

@@ -29,6 +29,8 @@ class Login extends Component {
     if (index !== -1) {
       console.log("authorized user");
       CommonHandler.setCookie("userinfo", this.state.userName);
+      localStorage.setItem("userData", JSON.stringify(this.state.userName));
+
       this.props.history.push("/dashboard");
     }
   };

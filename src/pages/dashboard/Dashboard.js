@@ -9,6 +9,8 @@ import Form from "../../components/form/Form";
 import { connect } from "react-redux";
 import { addMessage } from "../../actions";
 
+import axios from "axios";
+
 import socketIOClient from "socket.io-client";
 const socket = socketIOClient("http://172.16.7.195:4000");
 
@@ -28,9 +30,19 @@ class Dashboard extends React.Component {
     let nameOfUser = JSON.parse(localStorage.getItem("userData"));
     console.log(nameOfUser);
 
-    this.setState({ username: nameOfUser.name }, () => {
+    this.setState({ username: nameOfUser }, () => {
       socket.emit("addUser", this.state.username);
     });
+
+    axios
+      .get("http://localhost:4000/dashboard")
+      .then(res => {
+        console.log(res);
+        this.setState({ finalMsg: res.data });
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
 
     socket.on("addUser", userData => {
       console.log(userData);
@@ -39,26 +51,19 @@ class Dashboard extends React.Component {
       });
     });
 
-    let tempChat = [...this.state.chatList];
-    socket.on("chat message", (msg, uname, res) => {
-      console.log(res);
-      this.setState({ msgList: res });
-      tempChat.push({ msg: msg, name: uname });
-      this.setState({ chatList: tempChat });
-      socket.emit("get message", this.state.username);
-      // this.props.dispatch(addMessage({ msg: msg, name: uname }));
-    });
-    socket.emit("get message", this.state.username);
-    socket.on("private", (pmsg, sender) => {
-      tempChat.push({ msg: pmsg, name: sender });
-      this.setState({ chatList: tempChat });
-      this.props.dispatch(addMessage({ msg: pmsg, name: sender }));
+    let tempChat = [];
+
+    socket.on("chat message", (msg, uname, receiver) => {
+      tempChat = [...this.state.finalMsg];
+      tempChat.push({ message: msg, sender: uname, receiver: receiver });
+      this.setState({ finalMsg: tempChat });
     });
 
-    socket.on("get message", dbData => {
-      console.log("db data");
-      console.log(dbData);
-      this.setState({ chatList: dbData });
+    socket.on("private", (pmsg, sender, receiver) => {
+      tempChat = [...this.state.finalMsg];
+      tempChat.push({ message: pmsg, sender: sender, receiver: receiver });
+      this.setState({ finalMsg: tempChat });
+      // this.props.dispatch(addMessage({ msg: pmsg, name: sender }));
     });
   };
 
@@ -77,7 +82,6 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    console.log(this.state.msgList);
     let ulist = Object.keys(this.state.userObj);
     return (
       <div className="dashboard">
@@ -92,7 +96,7 @@ class Dashboard extends React.Component {
           </div>
 
           <div className="list-message">
-            <ChatList listText={this.state.chatList} />
+            <ChatList listText={this.state.finalMsg} />
             <Form
               handleChange={this.handleChange}
               value={this.state.message}
