@@ -1,0 +1,8 @@
+.form-field {
+  position: fixed;
+  bottom: 20px;
+  width: 80%;
+  padding: 20px;
+  background-color: #282c34;
+  color: white;
+}

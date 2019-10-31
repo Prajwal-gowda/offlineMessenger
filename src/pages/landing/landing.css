@@ -1,0 +1,38 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  font-size: 200px;
+  color: #09d3ac;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.header-logo {
+  color: #09d3ac;
+}
+
+.login-btn {
+  width: 200px;
+  background-color: #09d3ac;
+  height: 50px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.google-icon {
+  font-size: 23px;
+  padding: 10px;
+}

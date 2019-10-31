@@ -1,0 +1,9 @@
+.common-btn {
+  width: 90px;
+  height: 30px;
+  color: black;
+  outline: none;
+  border: none;
+  background-color: #09d3ac;
+  cursor: pointer;
+}
